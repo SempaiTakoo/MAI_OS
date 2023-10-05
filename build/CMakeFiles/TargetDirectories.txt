@@ -1,7 +1,0 @@
-/home/takoo/Desktop/MAI_OS/build/CMakeFiles/edit_cache.dir
-/home/takoo/Desktop/MAI_OS/build/CMakeFiles/rebuild_cache.dir
-/home/takoo/Desktop/MAI_OS/build/lab1/CMakeFiles/lab1.dir
-/home/takoo/Desktop/MAI_OS/build/lab1/CMakeFiles/child1.dir
-/home/takoo/Desktop/MAI_OS/build/lab1/CMakeFiles/child2.dir
-/home/takoo/Desktop/MAI_OS/build/lab1/CMakeFiles/edit_cache.dir
-/home/takoo/Desktop/MAI_OS/build/lab1/CMakeFiles/rebuild_cache.dir
