@@ -1,9 +1,21 @@
 #include <iostream>
 #include <string>
-#include <regex>
 
 int main(){
     std::string line;
     std::getline(std::cin, line);
-    std::cout << std::regex_replace(line, std::regex(" {2,}"), " ");
+    if (line.empty() || line.size() == 1) {
+        std::cout << line << std::endl;
+        exit(EXIT_SUCCESS);
+    }
+    size_t i = 0;
+    while (i < line.size() - 1) {
+        if (line[i - 1] == ' ' && line[i] == ' ') {
+            line.erase(i, 1);
+            continue;
+        }
+        ++i;
+    }
+    std::cout << line << std::endl;
+    exit(EXIT_SUCCESS);
 }
