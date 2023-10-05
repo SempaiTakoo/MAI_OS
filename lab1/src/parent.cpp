@@ -40,7 +40,7 @@ void InitParent(const char *pathToChild1, const char *pathToChild2) {
 void ParentProcess(int *child1In, int *child2Out, int *pipeBetween) {
     close(child1In[READ]);
     // close(child1In[WRITE]);
-    // close(child2Out[READ]);d
+    // close(child2Out[READ]);
     close(child2Out[WRITE]);
     close(pipeBetween[READ]);
     close(pipeBetween[WRITE]);
