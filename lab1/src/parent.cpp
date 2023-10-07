@@ -1,5 +1,6 @@
-#include "utils.h"
 #include "parent.h"
+
+#include "utils.h"
 
 #define BUFFER_SIZE (256U)
 
@@ -8,7 +9,7 @@ void InitParent(const char *pathToChild1, const char *pathToChild2) {
     CreatePipe(child1In);
     CreatePipe(child2Out);
     CreatePipe(pipeBetween);
-    
+
     pid_t child1Pid = fork();
     pid_t child2Pid;
     if (child1Pid == -1) {
@@ -19,7 +20,6 @@ void InitParent(const char *pathToChild1, const char *pathToChild2) {
     } else if (child1Pid > 0) {
         /* child1 */
         Child1Process(pathToChild1, child1In, child2Out, pipeBetween);
-
     } else {
         /* parent */
         child2Pid = fork();
@@ -27,13 +27,12 @@ void InitParent(const char *pathToChild1, const char *pathToChild2) {
             /* error */
             std::cerr << "Failed to create child2" << std::endl;
             exit(EXIT_FAILURE);
-        }
-        if (child2Pid > 0) {
+        } else if (child2Pid > 0) {
             /* child2 */
             Child2Process(pathToChild2, child1In, child2Out, pipeBetween);
-            return;
+        } else {
+            ParentProcess(child1In, child2Out, pipeBetween);
         }
-        ParentProcess(child1In, child2Out, pipeBetween);
     }
 }
 
@@ -62,50 +61,54 @@ void ParentProcess(int *child1In, int *child2Out, int *pipeBetween) {
     close(child2Out[READ]);
 }
 
-void Child1Process(const char *pathToChild1, int *child1In, int *child2Out, int *pipeBetween) {
+void Child1Process(const char *pathToChild1, int *child1In, int *child2Out,
+                   int *pipeBetween) {
     // close(child1In[READ]);
     close(child1In[WRITE]);
     close(child2Out[READ]);
     close(child2Out[WRITE]);
     close(pipeBetween[READ]);
     // close(pipeBetween[WRITE]);
-
     int result;
+
     result = dup2(child1In[READ], STDIN_FILENO);
     if (result == -1) {
         std::cerr << "Child1: Failed to dublicate child1In" << std::endl;
         exit(EXIT_FAILURE);
     }
+    close(child1In[READ]);
+
     result = dup2(pipeBetween[WRITE], STDOUT_FILENO);
-    if (result == -1){
+    if (result == -1) {
         std::cerr << "Child1: Failed to dublicate child2Out" << std::endl;
         exit(EXIT_FAILURE);
-    }   
+    } 
+    close(pipeBetween[WRITE]);
     Exec(pathToChild1);
-    // close(child1In[READ]);
-    // close(pipeBetween[WRITE]);
 }
 
-void Child2Process(const char *pathToChild2, int *child1In, int *child2Out, int *pipeBetween) {
+void Child2Process(const char *pathToChild2, int *child1In, int *child2Out,
+                   int *pipeBetween) {
     close(child1In[READ]);
     close(child1In[WRITE]);
     close(child2Out[READ]);
     // close(child2Out[WRITE]);
     // close(pipeBetween[READ]);
     close(pipeBetween[WRITE]);
-
     int result;
+
     result = dup2(pipeBetween[READ], STDIN_FILENO);
     if (result == -1) {
         std::cerr << "Child2: Failed to dublicate pipeBetween" << std::endl;
         exit(EXIT_FAILURE);
     }
+    close(pipeBetween[READ]);
+
     result = dup2(child2Out[WRITE], STDOUT_FILENO);
     if (result == -1) {
         std::cerr << "Child2: Failed to dublicate child1In" << std::endl;
         exit(EXIT_FAILURE);
     }
+    close(child2Out[WRITE]);
     Exec(pathToChild2);
-    // close(pipeBetween[READ]);
-    // close(child2Out[WRITE]);
 }

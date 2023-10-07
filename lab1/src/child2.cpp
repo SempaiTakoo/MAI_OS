@@ -6,7 +6,7 @@ int main(){
     std::string line;
     std::getline(std::cin, line);
     if (line.empty() || line.size() == 1) {
-        std::cout << line << std::endl;
+        std::cout << line << '\0';
         exit(EXIT_SUCCESS);
     }
     size_t i = 0;
@@ -18,6 +18,6 @@ int main(){
         ++i;
     }
 
-    std::cout << line;
+    std::cout << line << '\0';
     exit(EXIT_SUCCESS);
 }

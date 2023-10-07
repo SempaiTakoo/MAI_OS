@@ -8,6 +8,6 @@ int main(){
     std::getline(std::cin, line);
     transform(line.begin(), line.end(), line.begin(), ::toupper);
 
-    std::cout << line;
+    std::cout << line << '\0';
     exit(EXIT_SUCCESS);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <unistd.h>
+#include <sys/wait.h>
 
 void InitParent(const char *pathToChild1, const char *pathToChild2);
 
