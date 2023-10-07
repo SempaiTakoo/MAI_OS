@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <unistd.h>
 
 int main(){
     std::string line;
@@ -16,6 +17,7 @@ int main(){
         }
         ++i;
     }
-    std::cout << line << std::endl;
+
+    std::cout << line;
     exit(EXIT_SUCCESS);
 }

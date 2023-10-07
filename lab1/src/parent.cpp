@@ -59,7 +59,7 @@ void ParentProcess(int *child1In, int *child2Out, int *pipeBetween) {
     } else {
         std::cout << buffer << std::endl;
     }
-    close(child1In[READ]);
+    close(child2Out[READ]);
 }
 
 void Child1Process(const char *pathToChild1, int *child1In, int *child2Out, int *pipeBetween) {
@@ -82,6 +82,8 @@ void Child1Process(const char *pathToChild1, int *child1In, int *child2Out, int 
         exit(EXIT_FAILURE);
     }   
     Exec(pathToChild1);
+    // close(child1In[READ]);
+    // close(pipeBetween[WRITE]);
 }
 
 void Child2Process(const char *pathToChild2, int *child1In, int *child2Out, int *pipeBetween) {
@@ -104,4 +106,6 @@ void Child2Process(const char *pathToChild2, int *child1In, int *child2Out, int 
         exit(EXIT_FAILURE);
     }
     Exec(pathToChild2);
+    // close(pipeBetween[READ]);
+    // close(child2Out[WRITE]);
 }
