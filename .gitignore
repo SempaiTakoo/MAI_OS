@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-*.vscode
-*build
-=======
 # Folders
 .vscode
 *build*
->>>>>>> lab1
 
 # Prerequisites
 *.d
